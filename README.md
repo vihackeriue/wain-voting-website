@@ -10,7 +10,7 @@ Dự án này là một ứng dụng **Voting App** fullstack gồm 3 phần ch�
 
 ## 📂 Cấu trúc thư mục
 
-wain-voting-website/
+<pre> ``` wain-voting-website/
 │
 ├── wain-voting-backend/ # Spring Boot (API, service, database)
 │ ├── src/
@@ -27,6 +27,7 @@ wain-voting-website/
 │ └── hardhat.config.js
 │
 └── README.md # Hướng dẫn sử dụng
+``` </pre>
 
 
 

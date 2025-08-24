@@ -10,11 +10,11 @@ public interface IUserService {
 
     UserResponse save(UserCreateRequest request);
 
-    UserResponse update(String email, UserUpdateInfRequest request);
+    UserResponse update(String username, UserUpdateInfRequest request);
 
     List<UserResponse> getAllUsers();
 
-    Void delete(String email);
+    void delete(String email);
 
     UserResponse getMyInfo();
 

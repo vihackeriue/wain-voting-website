@@ -17,10 +17,10 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
-
-    String email;
+    String username;
     String password;
     String fullName;
+    String email;
     String phone;
 
     @ManyToMany

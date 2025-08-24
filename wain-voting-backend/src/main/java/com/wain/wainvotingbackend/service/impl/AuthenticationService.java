@@ -76,7 +76,7 @@ public class AuthenticationService implements IAuthenticationService {
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
 
         var user = userRepository
-                .findByEmail(request.getEmail())
+                .findByUsername(request.getUsername())
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
         boolean authenticated = passwordEncoder.matches(request.getPassword(), user.getPassword());
 
@@ -160,7 +160,7 @@ public class AuthenticationService implements IAuthenticationService {
         JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
 
         JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
-                .subject(user.getEmail())
+                .subject(user.getUsername())
                 .issuer("wain-voting-backend")
                 .issueTime(new Date())
                 .expirationTime(new Date(

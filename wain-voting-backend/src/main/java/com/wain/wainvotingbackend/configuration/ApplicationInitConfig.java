@@ -26,7 +26,9 @@ public class ApplicationInitConfig {
     PasswordEncoder passwordEncoder;
 
     @NonFinal
-    static final String ADMIN_EMAIL = "admin";
+    static final String ADMIN_USERNAME = "admin";
+    @NonFinal
+    static final String ADMIN_EMAIL = "admin@gmail.com";
     @NonFinal
     static final String ADMIN_PASSWORD = "admin";
 
@@ -57,7 +59,9 @@ public class ApplicationInitConfig {
 
               User user = User.builder()
                       .email(ADMIN_EMAIL)
+                      .username(ADMIN_USERNAME)
                       .fullName("admin")
+                      .roles(roles)
                       .password(passwordEncoder.encode(ADMIN_PASSWORD))
                       .build();
               userRepository.save(user);

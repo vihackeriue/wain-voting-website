@@ -16,11 +16,14 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -54,23 +57,36 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public UserResponse update(String email, UserUpdateInfRequest request) {
-        return null;
+    public UserResponse update(String username, UserUpdateInfRequest request) {
+
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+
+        userMapper.updateUser(user, request);
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+
+        user = userRepository.save(user);
+
+        return userMapper.toUserResponse(user);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Override
     public List<UserResponse> getAllUsers() {
-        return List.of();
+
+        return userRepository.findAll().stream().map(userMapper::toUserResponse).toList();
     }
 
     @Override
-    public Void delete(String email) {
-        return null;
+    public void delete(String username) {
+        userRepository.deleteByUsername(username);
     }
 
     @Override
     public UserResponse getMyInfo() {
-        return null;
+        var context = SecurityContextHolder.getContext();
+        String username = context.getAuthentication().getName();
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+        return userMapper.toUserResponse(user);
     }
 
     @Override

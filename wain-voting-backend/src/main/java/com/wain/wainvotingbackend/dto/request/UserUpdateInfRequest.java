@@ -3,7 +3,7 @@ package com.wain.wainvotingbackend.dto.request;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.List;
+
 
 @Setter
 @Getter
@@ -13,10 +13,9 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserUpdateInfRequest {
 
+    String username;
     String email;
     String password;
     String fullName;
     String phone;
-
-    List<String> roles;
 }

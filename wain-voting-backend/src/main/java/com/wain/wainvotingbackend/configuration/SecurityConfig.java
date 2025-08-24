@@ -23,11 +23,14 @@ import org.springframework.web.filter.CorsFilter;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    private final String[] PUBLIC_URLS = {"/user/create", "/auth/introspect", "/auth/authenticate", "/auth/log-out", "/auth/refresh"
+    private final String[] PUBLIC_URLS = {"/api/user/create", "/auth/introspect", "/auth/authenticate", "/auth/log-out", "/auth/refresh"
     };
 
     @Autowired
     private CustomJwtDecoder jwtDecoder;
+
+    @Autowired
+    CustomAccessDeniedHandler accessDeniedHandler;
 
    @Bean
    public PasswordEncoder passwordEncoder() {
@@ -35,14 +38,22 @@ public class SecurityConfig {
    }
    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, JwtAuthenticationConverter jwtAuthenticationConverter) throws Exception {
-       http.authorizeHttpRequests(requests -> requests.requestMatchers(HttpMethod.POST, PUBLIC_URLS)
-               .permitAll()
+       http.authorizeHttpRequests(
+               requests -> requests
+                       .requestMatchers(HttpMethod.POST, PUBLIC_URLS).permitAll()
+                       .requestMatchers("/api/role/**").hasRole("ADMIN")
                .anyRequest()
                .authenticated()
        );
+       // 403
+       http.exceptionHandling(exception -> exception
+               .accessDeniedHandler(accessDeniedHandler)
+       );
+       // 401
        http.oauth2ResourceServer(oauth2 -> oauth2.jwt(jwtConfigurer ->
                        jwtConfigurer.decoder(jwtDecoder).jwtAuthenticationConverter(jwtAuthenticationConverter()))
                .authenticationEntryPoint(new JwtAuthenticationEntryPoint()));
+
 
        http.csrf(AbstractHttpConfigurer::disable);
        http.cors(Customizer.withDefaults());

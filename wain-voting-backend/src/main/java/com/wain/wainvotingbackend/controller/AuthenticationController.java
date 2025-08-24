@@ -26,8 +26,8 @@ public class AuthenticationController {
 
     IAuthenticationService authenticationService;
 
-    @PostMapping("/log-in")
-    ApiResponse<AuthenticationResponse> login(@RequestBody AuthenticationRequest authenticationRequest) {
+    @PostMapping("/authenticate")
+    ApiResponse<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest authenticationRequest) {
         var result = authenticationService.authenticate(authenticationRequest);
 
         return ApiResponse.<AuthenticationResponse>builder().data(result).build();

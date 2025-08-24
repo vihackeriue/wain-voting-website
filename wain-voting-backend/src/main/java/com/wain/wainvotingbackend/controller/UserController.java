@@ -4,7 +4,6 @@ import com.wain.wainvotingbackend.dto.request.UserCreateRequest;
 import com.wain.wainvotingbackend.dto.request.UserUpdateInfRequest;
 import com.wain.wainvotingbackend.dto.response.ApiResponse;
 import com.wain.wainvotingbackend.dto.response.UserResponse;
-import com.wain.wainvotingbackend.entity.User;
 import com.wain.wainvotingbackend.service.IUserService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -29,9 +28,8 @@ public class UserController {
 
         return ApiResponse.<UserResponse>builder().data(user).build() ;
     }
-    @PutMapping("/{username}")
+    @PutMapping("/update/{username}")
     public ApiResponse<UserResponse> updateUser(@PathVariable String username, @RequestBody @Valid UserUpdateInfRequest user) {
-
 
         return ApiResponse.<UserResponse>builder().data(userService.update(username, user)).build();
     }

@@ -16,6 +16,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -56,6 +57,8 @@ public class UserService implements IUserService {
         return userMapper.toUserResponse(user);
     }
 
+    //    Chỉ cho phép đúng người truy cập mới cho phép vào
+    @PreAuthorize("#username == authentication.name or hasRole('ADMIN')")
     @Override
     public UserResponse update(String username, UserUpdateInfRequest request) {
 

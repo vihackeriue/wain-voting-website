@@ -23,7 +23,7 @@ import org.springframework.web.filter.CorsFilter;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    private final String[] PUBLIC_URLS = {"/user/create", "/auth/introspect", "/auth/log-in", "/auth/log-out", "/auth/refresh"
+    private final String[] PUBLIC_URLS = {"/user/create", "/auth/introspect", "/auth/authenticate", "/auth/log-out", "/auth/refresh"
     };
 
     @Autowired

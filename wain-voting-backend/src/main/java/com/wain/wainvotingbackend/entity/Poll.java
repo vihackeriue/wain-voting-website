@@ -7,7 +7,6 @@ import lombok.experimental.FieldDefaults;
 
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -23,7 +22,8 @@ public class Poll {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    String name;
+    String title;
+    @Column(columnDefinition = "TEXT")
     String description;
     LocalDateTime startTime;
     LocalDateTime endTime;

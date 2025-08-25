@@ -25,6 +25,6 @@ public class Candidate {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "poll_id", nullable = false)
-    private Poll poll;
+    Poll poll;
 
 }

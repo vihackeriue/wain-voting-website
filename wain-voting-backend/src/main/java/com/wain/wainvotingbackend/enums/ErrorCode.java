@@ -12,6 +12,7 @@ public enum ErrorCode {
     UNAUTHENTICATED(1006, "Unauthenticated", HttpStatus.UNAUTHORIZED),
     USER_NOT_EXISTED(1005, "User not existed", HttpStatus.NOT_FOUND),
     UNAUTHORIZED(1007, "You do not have permission", HttpStatus.FORBIDDEN),
+    DATA_NOT_FOUND(1008, "Data not found", HttpStatus.NOT_FOUND),
     ;
 
 

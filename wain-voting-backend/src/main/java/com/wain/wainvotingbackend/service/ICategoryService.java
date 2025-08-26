@@ -15,5 +15,4 @@ public interface ICategoryService {
     void delete(Long id);
     CategoryDetailResponse getCategoryById(Long id);
 
-
 }

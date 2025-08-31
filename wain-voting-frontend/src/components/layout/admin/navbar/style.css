@@ -1,0 +1,23 @@
+.custom-nav-link {
+  padding: 10px 16px;
+  color: rgba(255, 255, 255, 0.75);
+  /* chữ mờ đi một chút */
+  font-weight: normal;
+  text-decoration: none;
+  transition: all 0.2s ease-in-out;
+}
+
+.custom-nav-link:hover {
+  color: white;
+  /* hover cho rõ hơn */
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.custom-nav-link.active {
+  color: white;
+  font-weight: bold;
+  background-color: rgba(255, 255, 255, 0.2);
+  /* highlight nền nhẹ */
+  border-radius: 4px;
+}

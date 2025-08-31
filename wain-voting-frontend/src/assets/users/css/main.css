@@ -1,0 +1,10 @@
+/* NavbarCustom.css */
+.navbar .nav-link:hover,
+.navbar .dropdown:hover>.nav-link {
+  color: #28a745 !important;
+  /* xanh lá */
+}
+
+.navbar .dropdown-menu {
+  min-width: 200px;
+}

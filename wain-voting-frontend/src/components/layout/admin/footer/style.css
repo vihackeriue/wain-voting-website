@@ -1,0 +1,10 @@
+footer a {
+    text-decoration: none;
+    color: #000; /* Màu đen mặc định */
+    transition: color 0.3s ease;
+  }
+  
+  footer a:hover {
+    color: #198754; /* Màu xanh Bootstrap 'success', bạn có thể đổi nếu muốn */
+  }
+  

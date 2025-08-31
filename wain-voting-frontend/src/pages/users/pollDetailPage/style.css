@@ -1,0 +1,42 @@
+.candidate-image-wrapper {
+    position: relative;
+    width: 200px;
+    /* 👉 tăng kích thước ảnh */
+    height: 200px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.candidate-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: 0.3s ease;
+}
+
+.vote-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #8e44ad;
+    color: #fff;
+    padding: 10px 20px;
+    /* 👈 có thể tăng thêm nếu muốn */
+    border: none;
+    border-radius: 30px;
+    opacity: 0;
+    transition: all 0.3s ease-in-out;
+    pointer-events: none;
+    font-size: 0.95rem;
+}
+
+.candidate-image-wrapper:hover .vote-button {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.candidate-image-wrapper:hover .candidate-img {
+    filter: brightness(0.7);
+
+}

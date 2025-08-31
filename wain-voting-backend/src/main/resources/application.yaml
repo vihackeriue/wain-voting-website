@@ -1,0 +1,18 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /voting
+spring:
+  datasource:
+    url: ${DBMS_CONNECTION:jdbc:mysql://localhost:3306/wain_voting_database} #lấy biến môi trường, nếu không có thì lấy giá trị mặt định
+    username: ${DBMS_USERNAME:root}
+    password: ${DBMS_PASSWORD:root}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+jwt:
+  signer-key: "OtMYV8XuCX5w2JkR13h0xdhU8XIksiTpM3wUgymemiviOV3GiOfRWS3sETgriuu2"
+  valid-duration: 3600 #second
+  refreshable-duration: 36000

@@ -1,0 +1,83 @@
+# ------------------------------
+# Global
+# ------------------------------
+*.log
+*.tmp
+*.swp
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.iml
+
+# ------------------------------
+# Java / Spring Boot
+# ------------------------------
+wain-voting-backend/target/
+wain-voting-backend/.mvn/
+wain-voting-backend/.classpath
+wain-voting-backend/.project
+wain-voting-backend/.settings/
+wain-voting-backend/.springBeans
+wain-voting-backend/.sts4-cache/
+wain-voting-backend/.factorypath
+
+# ------------------------------
+# Node.js / ReactJS
+# ------------------------------
+wain-voting-frontend/node_modules/
+wain-voting-frontend/.pnp
+wain-voting-frontend/.pnp.js
+
+
+wain-voting-frontend/.next/
+wain-voting-frontend/.nuxt/
+wain-voting-frontend/dist/
+wain-voting-frontend/build/
+
+wain-voting-frontend/.DS_Store
+wain-voting-frontend/.env.local
+wain-voting-frontend/.env.development.local
+wain-voting-frontend/.env.test.local
+wain-voting-frontend/.env.production.local
+
+wain-voting-frontend/npm-debug.log*
+wain-voting-frontend/yarn-debug.log*
+wain-voting-frontend/yarn-error.log*
+
+# React testing / coverage
+wain-voting-frontend/coverage/
+wain-voting-frontend/.eslintcache
+
+# ------------------------------
+# Hardhat (Ethereum dev)
+# ------------------------------
+wain-voting-hardhat/node_modules/
+wain-voting-hardhat/cache/
+wain-voting-hardhat/artifacts/
+wain-voting-hardhat/coverage/
+wain-voting-hardhat/coverage.json
+wain-voting-hardhat/typechain/
+wain-voting-hardhat/typechain-types/
+
+# Dotenv
+wain-voting-hardhat/.env
+wain-voting-frontend/.env
+wain-voting-backend/.env
+
+# ------------------------------
+# OS / Editor files
+# ------------------------------
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# ------------------------------
+# Yarn / npm logs
+# ------------------------------
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*

@@ -76,9 +76,10 @@ Backend API:   http://localhost:8080
 Frontend React: http://localhost:5173
 Ganache RPC:    http://127.0.0.1:7545
 IPFS API:       http://127.0.0.1:5001
-
+bash```
 ## kết quả:
 **Link**: [result](https://drive.google.com/file/d/1eiBVP5SNa8DgbizF3B421kbwS5F1xqnI/view?usp=sharing)
+
 
 
 

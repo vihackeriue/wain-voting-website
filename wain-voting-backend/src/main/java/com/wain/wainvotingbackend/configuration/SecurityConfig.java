@@ -23,9 +23,9 @@ import org.springframework.web.filter.CorsFilter;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    private final String[] PUBLIC_URLS = {"/api/user/create", "/auth/introspect", "/auth/authenticate", "/auth/log-out", "/auth/refresh"
+    private final String[] PUBLIC_URLS = {"/users", "/auth/introspect", "/auth/authenticate", "/auth/log-out", "/auth/refresh"
     };
-
+    private final String[] PUBLIC_GET_URLS = {"/polls/**", "/categories/**"};
     @Autowired
     private CustomJwtDecoder jwtDecoder;
 
@@ -41,6 +41,7 @@ public class SecurityConfig {
        http.authorizeHttpRequests(
                requests -> requests
                        .requestMatchers(HttpMethod.POST, PUBLIC_URLS).permitAll()
+                       .requestMatchers(HttpMethod.GET, PUBLIC_GET_URLS).permitAll()
                        .requestMatchers("/api/role/**").hasRole("ADMIN")
                .anyRequest()
                .authenticated()

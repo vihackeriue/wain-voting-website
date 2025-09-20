@@ -16,7 +16,8 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.data.domain.Pageable;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,7 +25,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor
@@ -72,9 +73,17 @@ public class UserService implements IUserService {
         return userMapper.toUserResponse(user);
     }
 
+
     @PreAuthorize("hasRole('ADMIN')")
     @Override
-    public List<UserResponse> getAllUsers() {
+    public List<UserResponse> findAll(Pageable pageable) {
+        return userRepository.findAll(pageable).getContent().stream().map(userMapper::toUserResponse)
+                .toList();
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @Override
+    public List<UserResponse> findAll() {
 
         return userRepository.findAll().stream().map(userMapper::toUserResponse).toList();
     }
@@ -95,5 +104,10 @@ public class UserService implements IUserService {
     @Override
     public String lockUser(String id) {
         return "";
+    }
+
+    @Override
+    public int totalItem() {
+        return  (int) userRepository.count();
     }
 }

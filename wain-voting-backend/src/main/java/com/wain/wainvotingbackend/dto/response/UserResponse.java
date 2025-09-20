@@ -22,5 +22,6 @@ public class UserResponse {
     String password;
     String fullName;
     String phone;
+    String walletAddress;
     Set<RoleResponse> roles;
 }

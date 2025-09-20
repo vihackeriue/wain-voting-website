@@ -4,6 +4,7 @@ import com.wain.wainvotingbackend.dto.request.PollCreateRequest;
 import com.wain.wainvotingbackend.dto.request.PollUpdateRequest;
 import com.wain.wainvotingbackend.dto.response.PollListResponse;
 import com.wain.wainvotingbackend.dto.response.PollDetailResponse;
+import com.wain.wainvotingbackend.dto.response.PollStatisticsResponse;
 import com.wain.wainvotingbackend.entity.Candidate;
 import com.wain.wainvotingbackend.entity.Category;
 import com.wain.wainvotingbackend.entity.Poll;
@@ -20,9 +21,11 @@ import com.wain.wainvotingbackend.service.IPollService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -76,14 +79,59 @@ public class PollService implements IPollService {
     }
 
     @Override
-    public List<PollListResponse> getAllPolls() {
+    public List<PollListResponse> findAll() {
         return pollRepository.findAll().stream().map(pollMapper::toPollListResponse).toList();
+    }
+
+    @Override
+    public List<PollListResponse> findAll(Pageable pageable, Long categoryId) {
+
+        if (categoryId != null) {
+            return pollRepository.findByCategoryId(categoryId, pageable).getContent()
+                    .stream().map(pollMapper::toPollListResponse).toList();
+        }
+        return pollRepository.findAll(pageable).getContent().stream()
+                .map(pollMapper::toPollListResponse)
+                .toList();
     }
 
     @Override
     public PollDetailResponse getDetailPoll(Long id) {
         Poll poll = pollRepository.findById(id).orElseThrow(()-> new AppException(ErrorCode.DATA_NOT_FOUND));
         return pollMapper.toPollDetailResponse(poll);
+    }
+
+    @Override
+    public int totalItem(Long categoryId) {
+        if (categoryId != null) {
+            return pollRepository.countByCategoryId(categoryId);
+        }
+        return (int) pollRepository.count();
+    }
+
+    @Override
+    public PollStatisticsResponse getStatistics() {
+        LocalDateTime now = LocalDateTime.now();
+
+        long total = pollRepository.count();
+        long upcoming = pollRepository.countByStartTimeAfter(now);
+        long ongoing = pollRepository.countByStartTimeBeforeAndEndTimeAfter(now, now);
+        long finished = pollRepository.countByEndTimeBefore(now);
+
+        return PollStatisticsResponse.builder()
+                .totalPolls(total)
+                .upcomingPolls(upcoming)
+                .ongoingPolls(ongoing)
+                .finishedPolls(finished)
+                .build();
+    }
+    @Override
+    public List<PollListResponse> getUpcomingPolls() {
+        LocalDateTime now = LocalDateTime.now();
+        return pollRepository.findByStartTimeAfterOrderByStartTimeAsc(now)
+                .stream()
+                .map(pollMapper::toPollListResponse)
+                .toList();
     }
 
     private User getUserCreate(){

@@ -18,4 +18,6 @@ public interface UserRepository extends JpaRepository<User, String> {
     Optional<User> findByUsername(String username);
 
     void deleteByUsername(String username);
+
+    boolean existsByWalletAddress(String walletAddress);
 }

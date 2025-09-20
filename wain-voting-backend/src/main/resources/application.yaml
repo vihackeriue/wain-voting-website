@@ -1,7 +1,7 @@
 server:
   port: 8080
   servlet:
-    context-path: /voting
+    context-path: /voting/api/
 spring:
   datasource:
     url: ${DBMS_CONNECTION:jdbc:mysql://localhost:3306/wain_voting_database} #lấy biến môi trường, nếu không có thì lấy giá trị mặt định

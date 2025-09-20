@@ -13,6 +13,9 @@ public enum ErrorCode {
     USER_NOT_EXISTED(1005, "User not existed", HttpStatus.NOT_FOUND),
     UNAUTHORIZED(1007, "You do not have permission", HttpStatus.FORBIDDEN),
     DATA_NOT_FOUND(1008, "Data not found", HttpStatus.NOT_FOUND),
+    WALLET_EXISTED(1009, "Wallet Address existed", HttpStatus.BAD_REQUEST),
+    WALLET_ALREADY_BOUND(1009, "You had Wallet", HttpStatus.BAD_REQUEST)
+
     ;
 
 

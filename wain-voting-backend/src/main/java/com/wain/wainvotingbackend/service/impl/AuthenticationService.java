@@ -5,10 +5,7 @@ import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
-import com.wain.wainvotingbackend.dto.request.AuthenticationRequest;
-import com.wain.wainvotingbackend.dto.request.IntrospectRequest;
-import com.wain.wainvotingbackend.dto.request.LogoutRequest;
-import com.wain.wainvotingbackend.dto.request.RefreshTokenRequest;
+import com.wain.wainvotingbackend.dto.request.*;
 import com.wain.wainvotingbackend.dto.response.AuthenticationResponse;
 import com.wain.wainvotingbackend.dto.response.IntrospectResponse;
 import com.wain.wainvotingbackend.entity.InvalidatedToken;
@@ -93,7 +90,7 @@ public class AuthenticationService implements IAuthenticationService {
     public void logout(String token) throws ParseException, JOSEException {
 
         try {
-            var signToken = verifyToken(token, true);
+            var signToken = verifyToken(token, false);
 
             String jit = signToken.getJWTClaimsSet().getJWTID();
             Date expiryTime = signToken.getJWTClaimsSet().getExpirationTime();
@@ -109,8 +106,8 @@ public class AuthenticationService implements IAuthenticationService {
     }
 
     @Override
-    public AuthenticationResponse refreshToken(RefreshTokenRequest request) throws ParseException, JOSEException {
-        var signedJWT = verifyToken(request.getToken(), true);
+    public AuthenticationResponse refreshToken(String token) throws ParseException, JOSEException {
+        var signedJWT = verifyToken(token, true);
 
         var jit = signedJWT.getJWTClaimsSet().getJWTID();
         var expiryTime = signedJWT.getJWTClaimsSet().getExpirationTime();
@@ -119,14 +116,45 @@ public class AuthenticationService implements IAuthenticationService {
                 InvalidatedToken.builder().id(jit).expiryTime(expiryTime).build();
         invalidatedTokenRepository.save(invalidatedToken);
 
-        var email = signedJWT.getJWTClaimsSet().getSubject();
+        var username = signedJWT.getJWTClaimsSet().getSubject();
 
         var user =
-                userRepository.findByEmail(email).orElseThrow(() -> new AppException(ErrorCode.UNAUTHENTICATED));
+                userRepository.findByUsername(username).orElseThrow(() -> new AppException(ErrorCode.UNAUTHENTICATED));
 
-        var token = generateToken(user);
+        var newToken = generateToken(user);
 
-        return AuthenticationResponse.builder().token(token).authenticated(true).build();
+        return AuthenticationResponse.builder().token(newToken).authenticated(true).build();
+    }
+
+    @Override
+    public AuthenticationResponse updateWalletAddress(String oldToken, UpdateWalletRequest request) throws ParseException, JOSEException {
+        String walletAddress = request.getWalletAddress();
+
+        if( userRepository.existsByWalletAddress(walletAddress))
+            throw  new AppException(ErrorCode.WALLET_EXISTED);
+
+        var signedJWT = verifyToken(oldToken, true);
+        var jit = signedJWT.getJWTClaimsSet().getJWTID();
+        var expiryTime = signedJWT.getJWTClaimsSet().getExpirationTime();
+
+        var username = signedJWT.getJWTClaimsSet().getSubject();
+        var user = userRepository.findByUsername(username).orElseThrow(() -> new AppException(ErrorCode.UNAUTHENTICATED));
+
+        if (user.getWalletAddress() != null) {
+            throw new AppException(ErrorCode.WALLET_ALREADY_BOUND);
+        }
+
+        user.setWalletAddress(walletAddress);
+
+        user = userRepository.save(user);
+
+        var newToken = generateToken(user);
+
+        InvalidatedToken invalidatedToken =
+                InvalidatedToken.builder().id(jit).expiryTime(expiryTime).build();
+        invalidatedTokenRepository.save(invalidatedToken);
+
+        return AuthenticationResponse.builder().token(newToken).authenticated(true).build();
     }
 
     private SignedJWT verifyToken(String token, boolean isRefresh) throws JOSEException, ParseException {
@@ -167,6 +195,7 @@ public class AuthenticationService implements IAuthenticationService {
                         Instant.now().plus(VALID_DURATION, ChronoUnit.SECONDS).toEpochMilli()
                 ))
                 .claim("scope", builScope(user))
+                .claim("walletAddress",  user.getWalletAddress() != null ? user.getWalletAddress() : "")
                 .jwtID(UUID.randomUUID().toString())
                 .build();
         Payload payload = new Payload(jwtClaimsSet.toJSONObject());

@@ -12,6 +12,7 @@ import com.wain.wainvotingbackend.service.ICategoryService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -45,8 +46,15 @@ public class CategoryService implements ICategoryService {
     }
 
     @Override
-    public List<CategoryResponse> getAllCategories() {
+    public List<CategoryResponse> findAll() {
         return categoryRepository.findAll().stream().map(categoryMapper::toCategoryResponse).toList();
+    }
+
+    @Override
+    public List<CategoryResponse> findAll(Pageable pageable) {
+        return categoryRepository.findAll(pageable).getContent().stream()
+                .map(categoryMapper::toCategoryResponse)
+                .toList();
     }
 
     @Override
@@ -60,5 +68,10 @@ public class CategoryService implements ICategoryService {
         Category category = categoryRepository.findById(id).orElseThrow(()-> new AppException(ErrorCode.DATA_NOT_FOUND));
 
         return categoryMapper.toCategoryDetailResponse(category);
+    }
+
+    @Override
+    public int totalItem() {
+        return (int) categoryRepository.count();
     }
 }

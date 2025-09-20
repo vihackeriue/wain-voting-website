@@ -30,6 +30,13 @@ wain-voting-website/
 └── README.md # Hướng dẫn sử dụng
 </pre>
 
+## 🚀 Hướng dẫn cài đặt & chạy project
+
+### 1. Clone project
+```bash
+git clone https://github.com/<your-username>/wain-voting-website.git
+cd wain-voting-website
+
 
 
 

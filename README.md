@@ -34,8 +34,48 @@ wain-voting-website/
 
 ### 1. Clone project
 ```bash
-git clone https://github.com/<your-username>/wain-voting-website.git
+git clone (https://github.com/vihackeriue/wain-voting-website.git)
 cd wain-voting-website
+
+# Mở Ganache và khởi tạo workspace mới
+# Kết nối Ganache với Metamask (xem file hướng dẫn PDF)
+# Khởi chạy IPFS local (Kubo)
+ipfs init
+ipfs daemon
+
+### Smart Contract (Hardhat)
+cd wain-voting-hardhat
+Tạo file .env:
+PRIVATE_KEY=your_private_key_from_ganache
+
+npx hardhat compile
+npx hardhat run scripts/deploy.js --network ganache
+
+###Frontend (ReactJS)
+cd wain-voting-frontend
+Copy CONTRACT_ADDRESS và ABI từ Hardhat vào:
+src/constants/contract
+
+Sửa link API trong:
+src/api/axios.js
+
+Cài đặt & chạy frontend:
+npm install
+npm run dev
+
+###Backend (Spring Boot)
+cd wain-voting-backend
+
+Tạo database MySQL:
+CREATE DATABASE wain_voting_database;
+
+Chạy backend
+
+###url:
+Backend API:   http://localhost:8080
+Frontend React: http://localhost:5173
+Ganache RPC:    http://127.0.0.1:7545
+IPFS API:       http://127.0.0.1:5001
 
 
 

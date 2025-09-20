@@ -41,47 +41,45 @@ contract Voting {
         _;
     }
 
-    function createPoll(
+    /// Gộp tạo poll và thêm ứng viên vào poll
+    function createPollWithCandidates(
         bytes32 _pollId,
         uint256 _maxVotesPerVoter,
-        string memory _cid
+        string memory _pollCid,
+        bytes32[] memory _candidateIds,
+        string[] memory _candidateCids
     ) public {
         require(!polls[_pollId].exists, "Poll already exists");
+        require(_candidateIds.length == _candidateCids.length, "Length mismatch");
 
-        polls[_pollId] = Poll({
-            id: _pollId,
-            maxVotesPerVoter: _maxVotesPerVoter,
-            cid: _cid,
-            candidateIds: new bytes32[](0),
-            exists: true
-        });
+        // Tạo poll
+        Poll storage newPoll = polls[_pollId];
+        newPoll.id = _pollId;
+        newPoll.maxVotesPerVoter = _maxVotesPerVoter;
+        newPoll.cid = _pollCid;
+        newPoll.exists = true;
 
-        emit PollCreated(_pollId);
-    }
-
-    function addCandidatesToPoll(
-        bytes32 _pollId,
-        bytes32[] memory _candidateIds,
-        string[] memory _cids
-    ) public pollExists(_pollId) {
-        require(_candidateIds.length == _cids.length, "Length mismatch");
-
-        for (uint256 i = 0; i < _cids.length; i++) {
+        // Thêm ứng viên
+        for (uint256 i = 0; i < _candidateIds.length; i++) {
             bytes32 candidateId = _candidateIds[i];
             require(!isCandidateInPoll[_pollId][candidateId], "Candidate exists");
 
             candidates[candidateId] = Candidate({
                 id: candidateId,
-                cid: _cids[i],
+                cid: _candidateCids[i],
                 voteCount: 0
             });
 
-            polls[_pollId].candidateIds.push(candidateId);
+            newPoll.candidateIds.push(candidateId);
             isCandidateInPoll[_pollId][candidateId] = true;
 
             emit CandidateAdded(_pollId, candidateId);
         }
+
+        emit PollCreated(_pollId);
     }
+
+    
 
     function vote(
         bytes32 _pollId,

@@ -78,7 +78,8 @@ Ganache RPC:    http://127.0.0.1:7545
 IPFS API:       http://127.0.0.1:5001
 
 ## kết quả:
-link: [result](https://drive.google.com/file/d/1eiBVP5SNa8DgbizF3B421kbwS5F1xqnI/view?usp=sharing)
+**Link**: [result](https://drive.google.com/file/d/1eiBVP5SNa8DgbizF3B421kbwS5F1xqnI/view?usp=sharing)
+
 
 
 

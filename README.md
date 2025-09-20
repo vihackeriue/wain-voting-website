@@ -32,13 +32,13 @@ wain-voting-website/
 
 ## 🚀 Hướng dẫn cài đặt & chạy project
 
-### 1. Clone project
+
 ```bash
 git clone (https://github.com/vihackeriue/wain-voting-website.git)
 cd wain-voting-website
 
 # Mở Ganache và khởi tạo workspace mới
-# Kết nối Ganache với Metamask (xem file hướng dẫn PDF)
+# Kết nối Ganache với Metamask (xem file hướng dẫn: https://drive.google.com/file/d/1N_ftutVAHPwr9ud7KZEn3KAYJ9-SaL1L/view?usp=sharing)
 # Khởi chạy IPFS local (Kubo)
 ipfs init
 ipfs daemon
@@ -76,6 +76,9 @@ Backend API:   http://localhost:8080
 Frontend React: http://localhost:5173
 Ganache RPC:    http://127.0.0.1:7545
 IPFS API:       http://127.0.0.1:5001
+
+## kết quả:
+link: https://drive.google.com/file/d/1eiBVP5SNa8DgbizF3B421kbwS5F1xqnI/view?usp=sharing
 
 
 
